@@ -39,3 +39,8 @@ As long as you've configured a database connection with the ESDbConnection as ab
     $command = Yii::app()->db->createCommand();
 
 
+##Caveats
+
+It is important to note that variables bound with bindParam() and bindParams() are converted to their corresponding bindValue() once entering the serialize / unserialize cycle due to the fact that variables bound by reference (such as with bindParam) will not survive the serialization round trip.  However, if you're planning on serializing a CDbCommand, you should probably avoid bindParam / bindParams anyway.  The current behavior is to take the value of variable the bind parameter references at the time of serialization, and then call bindValue() on that value upon unserialize.
+
+####TLDR; don't use bindParam(s), use bindValue(s) instead.
