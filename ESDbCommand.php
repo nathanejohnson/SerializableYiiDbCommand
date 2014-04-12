@@ -105,7 +105,6 @@ class ESDbCommand extends CDbCommand implements Serializable {
             array(
                 '_query' => $_query,
                 'connectionName' => $connectionName,
-                '_bindParams' => $this->_bindParams,
                 '_bindValues' => $this->_bindValues,
                 'params' => $this->params
             )
