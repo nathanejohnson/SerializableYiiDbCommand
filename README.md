@@ -1,3 +1,6 @@
+##Requirements
+Yii 1.1.x, php 5.3+
+
 ## Yii Serializable Database Command
 
 This is a Yii extension that allows a user to freeze and thaw a CDbCommand.  This could be useful for, as an example, being able to "freeze" a report that might take a while, send the job to a queueing system and have it picked up by a worker process (perhaps a Yii command line process) that would then "thaw" the job and execute it asynchronously.  This would give you the ability to have one method for creating reports, and makes it trivial to either process it synchronously within the request or farm it out.
