@@ -31,7 +31,7 @@ Which brings us to:
 
 ##ESDbCommand
 
-This is where the "magic" happens.  This class is where the actual serialization takes place.  This is a drop-in replacement for CDbCommand, with the exception that this will survive a serialize and unserialize round trip.  It uses the ESDbconnection 'connectionName' to know what connection to get from the config, preventing redundant connections to the database.
+This is where the "magic" happens.  This class is where the actual serialization takes place.  This is a drop-in replacement for CDbCommand, with the exception that this will survive a serialize and unserialize round trip.  It uses the ESDbConnection 'connectionName' to know what connection to get from the config, preventing redundant connections to the database.
 
 As long as you've configured a database connection with the ESDbConnection as above, to use ESDbCommand, you simply:
 

@@ -29,12 +29,13 @@ class ESDbCommand extends CDbCommand implements Serializable {
      */
     public function bindParam($name, &$value, $dataType = null, $length = null,
         $driverOptions = null) {
+        /* here we have to "fake" it for the serialized form,
+         * upon unserialize bindParams become bindValues
+         */
         $this->_bindParams[$name] =
             array(
                 'value' => &$value,
-                'dataType' => $dataType,
-                'length' => $length,
-                'driverOptions' => $driverOptions
+                'dataType' => $dataType
             );
 
         return parent::bindParam($name, $value, $dataType, $length,
@@ -91,6 +92,15 @@ class ESDbCommand extends CDbCommand implements Serializable {
         $queryProp->setAccessible(true);
         $_query = $queryProp->getValue($this);
         $connectionName = $this->getConnection()->connectionName;
+        // convert bindParams to bindValues, taking values of variables
+        // from the time of serialization.
+        foreach ($this->_bindParams as $name => $props) {
+            $this->_bindValues[$name] = array(
+                'value' => $props['value'],
+                'dataType' => $props['dataType']
+                );
+        }
+
         return serialize(
             array(
                 '_query' => $_query,
@@ -115,17 +125,11 @@ class ESDbCommand extends CDbCommand implements Serializable {
         /* Reflection to get around private variable visibility of _query in
          * parent class
          */
-            
+
         $queryProp = $refObj->getProperty('_query');
         $queryProp->setAccessible(true);
         $queryProp->setValue($this, $obj['_query']);
 
-        foreach ($obj['_bindParams'] as $name => $params) {
-            $this
-                ->bindParam($name, $params['value'], $params['dataType'],
-                    $params['length'], $params['driverOptions']
-                );
-        }
         foreach ($obj['_bindValues'] as $name => $params) {
             $this->bindValue($name, $params['value'], $params['dataType']);
         }
