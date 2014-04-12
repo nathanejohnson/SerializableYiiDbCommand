@@ -6,7 +6,7 @@ This is a Yii extension that allows a user to freeze and thaw a CDbCommand.  Thi
 
 This class extends CDbConnection, and adds the following parameter:
 
-###connectionName
+    connectionName
 
 This parameter is used to signal what the connection name is on the thawing side.  Defaults to 'db'.  As an example:
 
