@@ -118,7 +118,9 @@ class ESDbCommand extends CDbCommand implements Serializable {
      */
     public function unserialize($data) {
         $obj = unserialize($data);
-        parent::__construct(Yii::app()->getComponent($obj['connectionName']));
+        $dbConnection = Yii::app()->getComponent($obj['connectionName']);
+        $dbConnection->setActive(true);
+        parent::__construct($dbConnection);
         $refObj = new ReflectionClass('CDbCommand');
 
         /* Reflection to get around private variable visibility of _query in
